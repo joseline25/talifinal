@@ -1,0 +1,34 @@
+
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block contents %}
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-4"><h2>Do you really want to delete {{program}} ? </h2> </h4>
+        <div class="">
+            <form action="{% url 'App:programdelete' program.id %}" method="POST">
+                {% csrf_token %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="mdi mdi-check-all me-2"></i>
+                    <a href="{% url 'App:programslist' %}">Cancel? </a>
+
+                </div>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="mdi mdi-block-helper me-2"></i>
+                    <input type="submit" value="Delete!">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block extra_javascript %}
+<!-- Alerts Live Demo js -->
+<script src="{% static 'js/pages/alerts.init.js' %}"></script>
+{% endblock %}

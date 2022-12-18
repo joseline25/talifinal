@@ -1,0 +1,347 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<!-- Responsive Table css -->
+<link href="{% static 'libs/admin-resources/rwd-table/rwd-table.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block contents %}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-4">
+                        <img src="{% static 'images/companies/img-1.png'%}" alt="" class="avatar-sm">
+                    </div>
+
+                    <div class="flex-grow-1 overflow-hidden">
+                        <h5 class="text-truncate font-size-15">{{ program.name }}</h5>
+                        
+                    </div>
+                </div>
+
+                <h5 class="font-size-15 mt-4">Project Details :</h5>
+
+                
+
+                <div class="text-muted mt-4">
+                    <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Structure: {{program.structure}}</p>
+                    <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Country : {{program.country}}</p>
+                    <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Statut : {% if program.confirmed %} Confirmed {% else %} Not Confirmed {% endif %} </p>
+                </div>
+                
+                <div class="row task-dates">
+                    <div class="col-sm-4 col-6">
+                        <div class="mt-4">
+                            <h5 class="font-size-14"><i class="bx bx-calendar me-1 text-primary"></i> Start Date</h5>
+                            <p class="text-muted mb-0">{{program.start_date}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 col-6">
+                        <div class="mt-4">
+                            <h5 class="font-size-14"><i class="bx bx-calendar-check me-1 text-primary"></i> Due Date</h5>
+                            <p class="text-muted mb-0">{{program.end_date}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Team Members</h4>
+
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap">
+                        <tbody>
+                            {% for i in Instructorss %}
+                            <tr>
+                                <td style="width: 50px;"><img src="{% static 'images/users/avatar-2.jpg'%}" class="rounded-circle avatar-xs" alt=""></td>
+                                <td><h5 class="font-size-14 m-0"><a href="{% url 'App:proginsdetails' program.id  i.id %}" class="text-dark">{{i.first_name}} {{i.last_name}}</a></h5></td>
+                                <td>
+                                    <div>
+                                        <!--a href="javascript: void(0);" class="badge bg-primary bg-soft text-primary font-size-11">Frontend</a>
+                                        <a href="javascript: void(0);" class="badge bg-primary bg-soft text-primary font-size-11">UI</a-->
+                                    </div>
+                                </td>
+                            </tr>
+                           
+                            
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+</div>
+<!-- end row -->
+
+
+
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Overview</h4>
+            <a href="{% url 'App:progcalendarmodify' program.id %}">
+            <button type="button" class="btn btn-dark waves-effect waves-light">
+                <i class="bx bx-edit bx-spin font-size-16 align-middle me-2"></i> Modify
+            </button>
+            </a>
+            <div class="table-rep-plugin">
+                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                    <table id="tech-companies-1" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th> Days of </th>
+        
+                            {% for w in weeks %}
+                            <th data-priority="1"> {{ w }} </th>
+                            {% endfor %}
+            
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="3">{{ days.0 }}</td>
+                    
+                                {% for i,j in tab_d.0 %}
+
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> </td>
+                                
+                                {% endfor %}
+                    
+                            </tr>
+                            
+                            <tr>
+                                {% for i in tab_d_afternoon.0%}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i in tab_d_evening.0%}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+                    
+                            <tr>
+                                <td rowspan="3">{{ days.1 }}</td>
+                    
+                                {% for i,j in tab_d.1 %}
+                    
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> </td>
+                    
+                                {% endfor %}
+                    
+                            </tr>
+
+                            <tr>
+                                {% for i in tab_d_afternoon.1%}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i in tab_d_evening.1%}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+                    
+                            <tr>
+                                <td rowspan="3">{{ days.2 }}</td>
+                    
+                                {% for i,j in tab_d.2 %}
+                    
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> </td>
+                    
+                                {% endfor %}
+                    
+                            </tr>
+
+                            <tr>
+                                {% for i in tab_d_afternoon.2%}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i in tab_d_evening.2%}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+                    
+                            <tr>
+                                <td rowspan="3">{{ days.3 }}</td>
+                    
+                                {% for i,j in tab_d.3 %}
+                    
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> </td>
+                    
+                                {% endfor %}
+                    
+                            </tr>
+                            <tr>
+                                {% for i in tab_d_afternoon.3 %}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i in tab_d_evening.3 %}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+                    
+                            <tr>
+                                <td rowspan="3">{{ days.4 }}</td>
+                    
+                                {% for i,j in tab_d.4 %}
+                    
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> </td>
+                    
+                                {% endfor %}
+                    
+                            </tr>
+
+                            <tr>
+                                {% for i in tab_d_afternoon.4 %}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i in tab_d_evening.4 %}
+                                <td>{{i.name_course}} </td>
+                                {% endfor %}
+                            </tr>
+                    
+                    
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            
+        </div>
+    </div>    
+</div>
+
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Choose an Instructor for a Course</h4>
+
+
+            <div class="table-rep-plugin">
+                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                    <form method="POST">
+                        {% csrf_token %}
+                    <table id="tech-companies-1" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th> Days of </th>
+        
+                            {% for w in weeks %}
+                            <th> {{ w }} </th>
+                            {% endfor %}
+            
+                        </tr>
+                       
+                        </thead>
+                        <tbody>
+                            {% for d in days %}
+                            <tr>
+                                <td rowspan="3"> {{ d }} </td>
+                                {% for w in weeks %}
+                                <td>
+                
+                                    <select name="{{ w }}{{ d }}morning" id="{{ w }}{{ d }}morning" class="form-control select2">
+                                        <optgroup label="Instructors">
+                                                <option value=" " selected></option>
+                                                {#{% with value=instructors.value %}#}
+                                                {% for instructor in instructors %}
+                                                <option value="{{instructor}}">{{ instructor }}</option>
+                                                {% endfor %}
+                                                {#{% endwith %}#}
+                                        </optgroup>
+                                    </select>
+                
+                                </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                
+                                {% for w in weeks %}
+                                <td>
+                
+                                    <select name="{{ w }}{{ d }}afternoon" id="{{ w }}{{ d }}afternoon" class="form-control select2">
+                                        <optgroup label="Instructors">
+                                                <option value=" " selected></option>
+                                                {% for instructor in instructors %}
+                                                <option value="{{instructor}}">{{ instructor }}</option>
+                                                {% endfor %}
+                                        </optgroup>
+                                    </select>
+                
+                                </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                
+                                {% for w in weeks %}
+                                <td>
+                
+                                    <select name="{{ w }}{{ d }}evening" id="{{ w }}{{ d }}evening" class="form-control select2">
+                                        <optgroup label="Instructors">
+                                                <option value=" " selected></option>
+                                                {% for instructor in instructors %}
+                                                <option value="{{instructor}}">{{ instructor }}</option>
+                                                {% endfor %}
+                                        </optgroup>
+                                    </select>
+                
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                <button type="submit" class="form-control">Register</button>
+            </form>
+            </div>
+
+           
+        </div>
+    </div>    
+</div>
+
+
+
+</div>
+
+<!-- end row -->
+
+            {% endblock %}
+
+            {% block extra_javascript %}
+                    <!-- apexcharts -->
+                    <script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+            
+                    <script src="{% static 'js/pages/project-overview.init.js' %}"></script>
+            
+            {% endblock %}

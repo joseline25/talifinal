@@ -1,0 +1,1013 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<!-- Responsive Table css -->
+<link href="{% static 'libs/admin-resources/rwd-table/rwd-table.min.css' %}" rel="stylesheet" type="text/css" />
+
+ <!-- dragula css -->
+ <link href="{% static 'libs/dragula/dist/dragula.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block contents %}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="flex-shrink-0 me-4">
+                        <img src="{% static 'images/companies/img-1.png'%}" alt="" class="avatar-sm">
+                    </div>
+
+                    <div class="flex-grow-1 overflow-hidden">
+                        <h5 class="text-truncate font-size-15">{{ program.name }}</h5>
+                        <h5 class="text-truncate font-size-15">Hello This is The Test !!!</h5>
+                    </div>
+                </div>
+
+                <h5 class="font-size-15 mt-4">Project Details :</h5>
+
+                
+                <div class="row task-dates">
+                    <div class="col-6">
+                        <div class="text-muted mt-4">
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Structure: {{program.structure}}</p>
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Country : {{program.country}}</p>
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Statut : {% if program.confirmed %} Confirmed {% else %} Not Confirmed {% endif %} </p>
+                        </div>
+                    </div>
+
+                    
+                    <div class="col-6">
+                        <div class="text-muted mt-4">
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Google Meet Link: {{program.google_meet_link}}</p>
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Public Calendar : {{program.public_calendar}}</p>
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Course Access : {{program.course_access}}</p>
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Email : {{program.email_program}} </p>
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Slack Room : {{program.slack_room}}</p>
+                            <p><i class="mdi mdi-chevron-right text-primary me-1"></i> Link to Attendance : {{program.link_attendance}} </p>
+                        </div>
+                    </div>
+                </div>
+
+                
+                   
+                
+                
+                <div class="row task-dates">
+                    <div class="col-sm-4 col-6">
+                        <div class="mt-4">
+                            <h5 class="font-size-14"><i class="bx bx-calendar me-1 text-primary"></i> Start Date</h5>
+                            <p class="text-muted mb-0">{{program.start_date}}</p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4 col-6">
+                        <div class="mt-4">
+                            <h5 class="font-size-14"><i class="bx bx-calendar-check me-1 text-primary"></i> Due Date</h5>
+                            <p class="text-muted mb-0">{{program.end_date}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Team Members</h4>
+
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap">
+                        <tbody>
+                            {% for i in Instructorss %}
+                            <tr>
+                                <td style="width: 50px;"><img src="{% static 'images/users/avatar-2.jpg'%}" class="rounded-circle avatar-xs" alt=""></td>
+                                <td><h5 class="font-size-14 m-0"><a href="{% url 'App:proginsdetails' program.id  i.id %}" class="text-dark">{{i.first_name}} {{i.last_name}}</a></h5></td>
+                                <td>
+                                    <div>
+                                        <!--a href="javascript: void(0);" class="badge bg-primary bg-soft text-primary font-size-11">Frontend</a>
+                                        <a href="javascript: void(0);" class="badge bg-primary bg-soft text-primary font-size-11">UI</a-->
+                                    </div>
+                                </td>
+                            </tr>
+                           
+                            
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end col -->
+</div>
+<!-- end row -->
+
+
+
+
+<div class="row">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Overview</h4>
+            <a href="{% url 'App:progcalendarmodify' program.id %}">
+            <button type="button" class="btn btn-dark waves-effect waves-light">
+                <i class="bx bx-edit bx-spin font-size-16 align-middle me-2"></i> Modify
+            </button>
+            </a>
+            <div class="table-rep-plugin">
+                <div class="table-responsive mb-0" data-pattern="priority-columns">
+                    <table id="tech-companies-1" class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th> Days of </th>
+        
+                            {% for w in weeks %}
+                            <th data-priority="1"> {{ w }} </th>
+                            {% endfor %}
+            
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="3">{{ days.0 }}</td>
+                    
+                                {% for i,j,k in tab_dd.0 %}
+
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                
+                                {% endfor %}
+                    
+                            </tr>
+                            
+                            <tr>
+                                {% for i,k in tab_dd_afternoon.0%}
+                                <td>{{i.name_course}} <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i,k in tab_dd_evening.0%}
+                                <td>{{i.name_course}} <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+                    
+                            <tr>
+                                <td rowspan="3">{{ days.1 }}</td>
+                    
+                                {% for i,j,k in tab_dd.1 %}
+                    
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p></td>
+                    
+                                {% endfor %}
+                    
+                            </tr>
+
+                            <tr>
+                                {% for i,k in tab_dd_afternoon.1%}
+                                <td>{{i.name_course}} <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i,k in tab_dd_evening.1%}
+                                <td>{{i.name_course}} <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+                    
+                            <tr>
+                                <td rowspan="3">{{ days.2 }}</td>
+                    
+                                {% for i,j,k in tab_dd.2 %}
+                    
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                    
+                                {% endfor %}
+                    
+                            </tr>
+
+                            <tr>
+                                {% for i,k in tab_dd_afternoon.2%}
+                                <td>{{i.name_course}}<p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i,k in tab_dd_evening.2%}
+                                <td>{{i.name_course}} <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+                    
+                            <tr>
+                                <td rowspan="3">{{ days.3 }}</td>
+                    
+                                {% for i,j,k in tab_dd.3 %}
+                    
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                    
+                                {% endfor %}
+                    
+                            </tr>
+                            <tr>
+                                {% for i,k in tab_dd_afternoon.3 %}
+                                <td>{{i.name_course}}<p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i,k in tab_dd_evening.3 %}
+                                <td>{{i.name_course}} <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+                    
+                            <tr>
+                                <td rowspan="3">{{ days.4 }}</td>
+                    
+                                {% for i,j,k in tab_dd.4 %}
+                    
+                                <td>{{ i.name_course }} <p style="font-size:x-small;"> {{ j }}</p> <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                    
+                                {% endfor %}
+                    
+                            </tr>
+
+                            <tr>
+                                {% for i,k in tab_dd_afternoon.4 %}
+                                <td>{{i.name_course}} <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p> </td>
+                                {% endfor %}
+                            </tr>
+
+                            <tr>
+                                {% for i,k in tab_dd_evening.4 %}
+                                <td>{{i.name_course}} <p style="font-size:x-small;"> {{ k.first_name }} {{ k.last_name }}</p></td>
+                                {% endfor %}
+                            </tr>
+                    
+                    
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>    
+</div>
+
+
+
+
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title mb-4">Choose an Instructor</h4>
+
+        <form method="POST" action="">
+            {% csrf_token %} 
+
+            
+            <div class="row">
+                
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label for="formrow-inputCity" class="form-label">Week</label>
+                        <select id="formrow-inputState" class="form-select" name="weekform">
+                            <option value=" " selected></option>
+                            {% for week in weeks %}
+                            <option value="{{week}}">{{ week }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label for="formrow-inputCity" class="form-label">Day</label>
+                        <select id="formrow-inputState" class="form-select" name="dayform">
+                            <option value=" " selected></option>
+                            {% for day in days %}
+                            <option value="{{day}}">{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label for="formrow-inputCity" class="form-label">Moment</label>
+                        <select id="formrow-inputState" class="form-select" name="momentform">
+                            <option value=" " selected></option>
+                            {% for moment in moments %}
+                            <option value="{{moment}}">{{ moment }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="mb-3">
+                        <label for="formrow-inputState" class="form-label">Instructor</label>
+                        <select id="formrow-inputState" class="form-select" name="instructorform">
+                            <option value=" " selected></option>
+                            {% for instructor in instructors %}
+                            <option value="{{instructor.id}}">{{ instructor }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+           
+            <div>
+                <button type="submit" class="btn btn-primary w-md">Set Instructor!</button>
+            </div>
+        </form>
+    </div>
+</div>
+    <!-- end card body -->
+
+
+
+    
+
+    <div class="row">
+        <h4 class="card-title mb-4">Tasks for {{program.name}}</h4>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown float-end">
+                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div> <!-- end dropdown -->
+
+                    <h4 class="card-title mb-4">Upcoming</h4>
+                    <div id="task-1">
+                        <div id="upcoming-task" class="pb-1 task-list">
+
+                            <div class="card task-box" id="uptask-1">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#uptask-1" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#uptask-1">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-secondary font-size-12" id="task-status">Waiting</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Topnav layout design</a></h5>
+                                        <p class="text-muted mb-4">14 Oct, 2019</p>
+                                    </div>
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-4">
+                                                <img src="{% static 'images/users/avatar-4.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-5">
+                                                <img src="{% static 'images/users/avatar-5.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-6">
+                                                <img src="{% static 'images/users/avatar-2.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block">
+                                                <div class="avatar-xs">
+                                                    <span class="avatar-title rounded-circle bg-info text-white font-size-16">
+                                                        3+
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 145</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                            <div class="card task-box" id="uptask-2">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#uptask-2" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#uptask-2">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-primary font-size-12" id="task-status">Approved</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Create a New Landing UI</a></h5>
+                                        <p class="text-muted">15 Oct, 2019</p>
+                                    </div>
+                                    
+                                    <ul class="ps-3 mb-4 text-muted" id="task-desc">
+                                        <li class="py-1">Separate existence is a myth.</li>
+                                        <li class="py-1">For music, sport, etc</li>
+                                    </ul>
+                                    
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-1">
+                                                <img src="{% static 'images/users/avatar-1.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-2">
+                                                <img src="{% static 'images/users/avatar-2.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-5">
+                                                <img src="{% static 'images/users/avatar-5.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 112</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                            <div class="card task-box" id="uptask-3">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#uptask-3" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#uptask-3">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-secondary font-size-12" id="task-status">Waiting</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Create a Skote Logo</a></h5>
+                                        <p class="text-muted mb-4">15 Oct, 2019</p>
+                                    </div>
+
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-4">
+                                                <img src="{% static 'images/users/avatar-4.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-5">
+                                                <img src="{% static 'images/users/avatar-5.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block">
+                                                <div class="avatar-xs">
+                                                    <span class="avatar-title rounded-circle bg-danger text-white font-size-16">
+                                                        9+
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 86</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                        </div>
+
+                        <div class="text-center d-grid">
+                            <a href="javascript: void(0);" class="btn btn-primary waves-effect waves-light addtask-btn" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-id="#upcoming-task"><i class="mdi mdi-plus me-1"></i> Add New</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end col -->
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown float-end">
+                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div> <!-- end dropdown -->
+
+                    <h4 class="card-title mb-4">In Progress</h4>
+                    <div id="task-2">
+                        <div id="inprogress-task" class="pb-1 task-list">
+                            <div class="card task-box" id="intask-1">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#intask-1" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#intask-1">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-success font-size-12" id="task-status">Complete</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Brand logo design</a></h5>
+                                        <p class="text-muted">12 Oct, 2019</p>
+                                    </div>
+
+                                    <ul class="list-inine ps-0 mb-4">
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);">
+                                                <div class="border rounded avatar-sm">
+                                                    <span class="avatar-title bg-transparent">
+                                                        <img src="{% static 'images/companies/img-1.png'%}" alt="" class="avatar-xs">
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);">
+                                                <div class="border rounded avatar-sm">
+                                                    <span class="avatar-title bg-transparent">
+                                                        <img src="{% static 'images/companies/img-2.png'%}" alt="" class="avatar-xs">
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);">
+                                                <div class="border rounded avatar-sm">
+                                                    <span class="avatar-title bg-transparent">
+                                                        <img src="{% static 'images/companies/img-3.png'%}" alt="" class="avatar-xs">
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-7">
+                                                <img src="{% static 'images/users/avatar-7.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-8">
+                                                <img src="{% static 'images/users/avatar-8.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 132</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                            <div class="card task-box" id="intask-2">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#intask-2" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#intask-2">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-warning font-size-12" id="task-status">Pending</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Create a Blog Template UI</a></h5>
+                                        <p class="text-muted mb-4">13 Oct, 2019</p>
+                                    </div>
+
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-6">
+                                                <img src="{% static 'images/users/avatar-6.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-4">
+                                                <img src="{% static 'images/users/avatar-4.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-7">
+                                                <img src="{% static 'images/users/avatar-7.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block">
+                                                <div class="avatar-xs">
+                                                    <span class="avatar-title rounded-circle bg-info text-white font-size-16">
+                                                        3+
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 103</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                            <div class="card task-box" id="intask-3">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#intask-3" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#intask-3">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-success font-size-12" id="task-status">Complete</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Skote Dashboard UI</a></h5>
+                                        <p class="text-muted mb-4">13 Oct, 2019</p>
+                                    </div>
+
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-4">
+                                                <img src="{% static 'images/users/avatar-4.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-5">
+                                                <img src="{% static 'images/users/avatar-5.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block">
+                                                <div class="avatar-xs">
+                                                    <span class="avatar-title rounded-circle bg-primary text-white font-size-16">
+                                                        7+
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 94</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                        </div>
+
+                        <div class="text-center d-grid">
+                            <a href="javascript: void(0);" class="btn btn-primary waves-effect waves-light addtask-btn" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-id="#inprogress-task"><i class="mdi mdi-plus me-1"></i> Add New</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end col -->
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="dropdown float-end">
+                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end">
+                            <a class="dropdown-item" href="#">Edit</a>
+                            <a class="dropdown-item" href="#">Delete</a>
+                        </div>
+                    </div> <!-- end dropdown -->
+
+                    <h4 class="card-title mb-4">Completed</h4>
+                    <div id="task-3">
+                        <div id="complete-task" class="pb-1 task-list">
+                            <div class="card task-box" id="cmptask-1">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#cmptask-1" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#cmptask-1">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-success font-size-12" id="task-status">Complete</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Redesign - Landing page</a></h5>
+                                        <p class="text-muted mb-4">10 Oct, 2019</p>
+                                    </div>
+
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-1">
+                                                <img src="{% static 'images/users/avatar-1.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-2">
+                                                <img src="{% static 'images/users/avatar-2.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-3">
+                                                <img src="{% static 'images/users/avatar-3.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 145</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                            <div class="card task-box" id="cmptask-2">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#cmptask-2" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#cmptask-2">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-success font-size-12" id="task-status">Complete</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Multipurpose Landing</a></h5>
+                                        <p class="text-muted">09 Oct, 2019</p>
+                                    </div>
+                                    
+                                    <ul class="list-inline mb-4">
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);">
+                                                <div>
+                                                    <img src="{% static 'images/small/img-4.jpg'%}" class="rounded" alt="" height="48">
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);">
+                                                <div>
+                                                    <img src="{% static 'images/small/img-5.jpg'%}" class="rounded" alt="" height="48">
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="javascript: void(0);">
+                                                <div>
+                                                    <img src="{% static 'images/small/img-6.jpg'%}" class="rounded" alt="" height="48">
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-4">
+                                                <img src="{% static 'images/users/avatar-4.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-5">
+                                                <img src="{% static 'images/users/avatar-5.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-6">
+                                                <img src="{% static 'images/users/avatar-6.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block">
+                                                <div class="avatar-xs">
+                                                    <span class="avatar-title rounded-circle bg-pink text-white font-size-16">
+                                                        5+
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 92</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                            <div class="card task-box" id="cmptask-3">
+                                <div class="card-body">
+                                    <div class="dropdown float-end">
+                                        <a href="#" class="dropdown-toggle arrow-none" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="mdi mdi-dots-vertical m-0 text-muted h5"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a class="dropdown-item edittask-details" href="#" id="taskedit" data-id="#cmptask-3" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">Edit</a>
+                                            <a class="dropdown-item deletetask" href="#" data-id="#cmptask-3">Delete</a>
+                                        </div>
+                                    </div> <!-- end dropdown -->
+                                    <div class="float-end ms-2">
+                                        <span class="badge rounded-pill badge-soft-secondary font-size-12" id="task-status">Waiting</span>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark" id="task-name">Skote landing Psd</a></h5>
+                                        <p class="text-muted mb-4">15 Oct, 2019</p>
+                                    </div>
+
+                                    <div class="avatar-group float-start task-assigne">
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-7">
+                                                <img src="{% static 'images/users/avatar-7.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block" value="member-8">
+                                                <img src="{% static 'images/users/avatar-8.jpg'%}" alt="" class="rounded-circle avatar-xs">
+                                            </a>
+                                        </div>
+                                        <div class="avatar-group-item">
+                                            <a href="javascript: void(0);" class="d-inline-block">
+                                                <div class="avatar-xs">
+                                                    <span class="avatar-title rounded-circle bg-info text-white font-size-16">
+                                                        2+
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-end">
+                                        <h5 class="font-size-15 mb-1" id="task-budget">$ 86</h5>
+                                        <p class="mb-0 text-muted">Budget</p>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <!-- end task card -->
+
+                        </div>
+
+                        <div class="text-center d-grid">
+                            <a href="javascript: void(0);" class="btn btn-primary waves-effect waves-light addtask-btn" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg" data-id="#complete-task"><i class="mdi mdi-plus me-1"></i> Add New</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- end row -->
+
+<div id="modalForm" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title add-task-title">Add New Task</h5>
+            <h5 class="modal-title update-task-title" style="display: none;">Update Task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="NewtaskForm" role="form" method="POST" action="{% url 'App:taskcreate' program.id %}">
+                <div class="form-group mb-3">
+                    <label for="taskname" class="col-form-label">Task Name<span class="text-danger">*</span></label>
+                    <div class="col-lg-12">
+                        <input id="taskname" name="taskname" type="text" class="form-control validate" placeholder="Enter Task Name..." required>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="col-form-label">Task Description</label>
+                    <div class="col-lg-12">
+                        <textarea id="taskdesc" class="form-control" name="taskdesc"></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label class="col-form-label">Add Team Member<span class="text-danger">*</span></label>
+                    <ul class="list-unstyled user-list validate" id="taskassignee">
+                        {% for instructor in instructors%}
+                        <li>
+                            <div class="form-check form-check-primary mb-2 d-flex align-items-center">
+                                <input class="form-check-input" type="checkbox" id="{{instructor}}" name="{{instructor}}">
+                                <label class="form-check-label ms-2" for="{{instructor}}">{{instructor.first_name}} {{instructor.last_name}}</label>
+                                <img src="{% static 'images/users/avatar-1.jpg'%}" class="rounded-circle avatar-xs m-1" alt="">
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label class="col-form-label">Status<span class="text-danger">*</span></label>
+                    <div class="col-lg-12">
+                        <select class="form-select validate" id="TaskStatus" name="TaskStatus" required>
+                            <option value="" selected>Choose..</option>
+                            {% for statu in status %}
+                            <option value="{{statu}}">{{statu}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="taskbudget" class="col-form-label">Budget<span class="text-danger">*</span></label>
+                    <div class="col-lg-12">
+                        <input id="taskbudget" name="taskbudget" type="number" placeholder="Enter Task Budget..." class="form-control" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <button type="button" class="btn btn-primary" id="addtask">Create Task</button>
+                        <button type="button" class="btn btn-primary" id="updatetaskdetail">Update Task</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+            {% endblock %}
+
+            {% block extra_javascript %}
+                    <!-- apexcharts -->
+                    <script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+            
+                    <script src="{% static 'js/pages/project-overview.init.js' %}"></script>
+
+
+
+                    <!-- dragula plugins -->
+                    <script src="{% static 'libs/dragula/dist/dragula.min.js' %}"></script>
+
+                    <!-- jquery-validation -->
+                    <script src="{% static 'libs/jquery-validation/dist/jquery.validate.min.js' %}"></script>
+
+                    <script src="{% static 'js/pages/task-kanban.init.js' %}"></script>
+
+                    <script src="{% static 'js/pages/task-form.init.js' %}"></script>
+            {% endblock %}

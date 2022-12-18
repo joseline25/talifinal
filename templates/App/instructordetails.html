@@ -1,0 +1,378 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <!-- DataTables -->
+    <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />    
+{% endblock %}
+
+{% block contents %}
+<div class="row">
+    <div class="col-xl-4">
+
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Instructor details</h4>
+
+                <p class="text-muted mb-4">Welcome to the profile of {{instructor.first_name}}
+                    {{instructor.last_name}}</p>
+                <div class="table-responsive">
+                    <table class="table table-nowrap mb-0">
+                        <tbody>
+                        <tr>
+                            <th scope="row">Full Name :</th>
+                            <td>{{instructor.first_name}} {{instructor.last_name}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Country :</th>
+                            <td>{{instructor.country}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Contract Type :</th>
+                            <td>{{instructor.contract}}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Devise :</th>
+                            <td>{{instructor.devise}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- end card -->
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-5">Rate</h4>
+                <div class="">
+                    <ul class="verti-timeline list-unstyled">
+                        <li class="event-list active">
+                            <div class="event-timeline-dot">
+                                <i class="bx bx-right-arrow-circle bx-fade-right"></i>
+                            </div>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="bx bxs-book h4 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);"
+                                                                    class="text-dark">Course</a></h5>
+                                        <span class="text-primary">{{instructor.rate_course}} {{instructor.devise}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="event-list">
+                            <div class="event-timeline-dot">
+                                <i class="bx bx-right-arrow-circle"></i>
+                            </div>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="bx bx-code h4 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark">TA</a>
+                                        </h5>
+                                        <span class="text-primary">{{instructor.rate_ta}} {{instructor.devise}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="event-list">
+                            <div class="event-timeline-dot">
+                                <i class="bx bx-right-arrow-circle"></i>
+                            </div>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="bx bx-book h4 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark">Checker</a>
+                                        </h5>
+                                        <span class="text-primary">{{instructor.rate_checker}} {{instructor.devise}}</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="event-list">
+                            <div class="event-timeline-dot">
+                                <i class="bx bx-right-arrow-circle"></i>
+                            </div>
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <i class="bx bx-book h4 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div>
+                                        <h5 class="font-size-15"><a href="javascript: void(0);" class="text-dark">Support</a>
+                                        </h5>
+                                        <span class="text-primary">{{instructor.rate_support}} {{instructor.devise}}</span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <!-- end card -->
+    </div>
+
+    <div class="col-xl-8">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium mb-2">Completed Programs</p>
+                                <h4 class="mb-0">{{ programs.count }}</h4>
+
+                            </div>
+
+                            <div class="flex-shrink-0 align-self-center">
+                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                                            <span class="avatar-title">
+                                                                <i class="bx bx-task font-size-24"></i>
+                                                            </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium mb-2">Total Courses</p>
+                                <h4 class="mb-0">{{ total }}</h4>
+                            </div>
+
+                            <div class="flex-shrink-0 align-self-center">
+                                <div class="avatar-sm mini-stat-icon rounded-circle bg-primary">
+                                                            <span class="avatar-title">
+                                                                <i class="bx bx-book font-size-24"></i>
+                                                            </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card mini-stats-wid">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <p class="text-muted fw-medium mb-2">Total Revenue</p>
+                                <h4 class="mb-0">{{ total_salary }} {{ instructor.devise }}</h4>
+                            </div>
+
+                            <div class="flex-shrink-0 align-self-center">
+                                <div class="avatar-sm mini-stat-icon rounded-circle bg-primary">
+                                                            <span class="avatar-title">
+                                                                <i class="bx bx-package font-size-24"></i>
+                                                            </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Revenue</h4>
+                <!--div id="revenue-chart" class="apex-charts" dir="ltr"></div-->
+                <div class="table-responsive">
+                    <table class="table table-nowrap table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Program</th>
+                            <th scope="col">Course</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Duration</th>
+                            <th scope="col">Salary</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for c,cc in courses %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{c.program.name}}</td>
+                            <td>{{c.course.name_course}}</td>
+                            <td>{{c.course_date|date:'l, F j, Y'}}</td>
+                            <td>{{c.course.hours}}</td>
+                            <td>{{cc.salaires}} {{instructor.devise}}</td>
+
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Programs</h4>
+                <div class="table-responsive">
+                    <table class="table table-nowrap table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Programs</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">Deadline</th>
+                            <th scope="col">Country</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for p in instructor.programs.all.distinct %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td><a href="{% url 'App:programdetails' p.id %}"> {{ p.name }}</a></td>
+                            <td>{{p.start_date}}</td>
+                            <td>{{p.end_date}}</td>
+                            <td>{{p.country}}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Get Calendar</h4>
+
+                <form method="POST" action="">
+                    {% csrf_token %} 
+
+                    
+                    <div class="row">
+                        
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="formrow-inputCity" class="form-label">Year</label>
+                                <input name="year" type="number" min="2022" class="form-control" id="formrow-inputCity" placeholder="Enter The Year">
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="formrow-inputState" class="form-label">Month</label>
+                                <select id="formrow-inputState" class="form-select" name="month">
+                                    <option selected>January</option>
+                                    {% for i,j in months.items %}
+                                            <option value="{{i}}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+                    <div>
+                        <button type="submit" class="btn btn-primary w-md">Get {{instructor.first_name}}'s calendar</button>
+                    </div>
+                </form>
+            </div>
+            <!-- end card body -->
+        </div>
+    </div>
+</div>
+<!-- end row -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">{{instructor.first_name}}'s Calendar for {{month}} of {{year}}</h4>
+                
+
+                <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
+                    <thead>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Week</th>
+                        <th>Day</th>
+                        <th>Date</th>
+                        <th>Number of hours</th>
+                        <th>Salary</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    {% for i,j in search %}
+                    <tr>
+                        <td>{{i.course.name_course}}</td>
+                        <td>{{i.new_week}}</td>
+                        <td>{{i.new_day}}</td>
+                        <td>{{i.course_date}}</td>
+                        <td>{{i.course.hours}}</td>
+                        <td>{{j.salaires}}</td>  
+                    </tr>
+                   {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+   
+{% endblock %}
+
+{% block extra_javascript %}
+<!-- apexcharts -->
+<script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
+
+<script src="{% static 'js/pages/profile.init.js' %}"></script>
+
+
+<!-- Required datatable js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<!-- Buttons examples -->
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<!-- Responsive examples -->
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- Datatable init js -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+
+{% endblock %}
+
+

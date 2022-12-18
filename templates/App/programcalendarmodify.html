@@ -1,0 +1,129 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<!-- DataTables -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css' %}" rel="stylesheet"
+      type="text/css"/>
+
+<!-- Responsive datatable examples -->
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet"
+      type="text/css"/>
+{% endblock %}
+
+
+{% block contents %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">{{program.name}} Calendar</h4>
+                
+
+                <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                    <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Week</th>
+                        <th>Day</th>
+                        <th>Date</th>
+                        <th>Edit</th>
+                        
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+
+
+                        {% for element in program_elements %}
+
+                    <tr>
+                        <td>{{element.course.name_course}}</td>
+                        <td>{{element.course.week}}</td>
+                        <td>{{element.course.day}}</td>
+                        <td>{{element.course_date |date:'l, F, j, Y'}}</td>
+                    <td><a href="{% url 'App:programdateedit' element.id program.pk %}" class="btn btn-outline-secondary btn-sm edit" title="Edit"><i class="fas fa-pencil-alt"></i></a></td>
+                        
+                        
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Edit</h4>
+
+
+                <form class="custom-validation" action="#" method="POST" method="POST">
+                    {% csrf_token %}
+                    <table class="table  dt-responsive  nowrap w-100">
+                        {{form.as_table}}
+                    </table>
+                     <div class="d-flex flex-wrap gap-2">
+                         <input class="btn btn-primary waves-effect waves-light" type="submit" value="Free This Day">
+                     </div>
+
+                </form>
+
+
+               
+
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+
+{% endblock %}
+
+
+{% block extra_javascript %}
+<!-- Required datatable js -->
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<!-- Buttons examples -->
+<script src="{% static 'libs/datatables.net-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'libs/jszip/dist/jszip.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/pdfmake.min.js' %}"></script>
+<script src="{% static 'libs/pdfmake/build/vfs_fonts.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<!-- Responsive examples -->
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js' %}"></script>
+
+<!-- Datatable init js -->
+<script src="{% static 'js/pages/datatables.init.js' %}"></script>
+
+<!-- formulaires -->
+<script src="{% static 'libs/parsleyjs/dist/parsley.min.js' %}"></script>
+
+<script src="{% static 'js/pages/form-validation.init.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+        
+
+
+
