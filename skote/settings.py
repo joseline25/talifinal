@@ -15,6 +15,7 @@ from pathlib import Path
 from django.contrib.messages import constants as messages
 
 
+
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',
@@ -167,6 +168,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 STATIC_ROOT = os.path.join(BASE_DIR,'assets')
 #Whitenoise
 #STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_FINDERS = ['yarn.finders.YarnFinder']
 
 AUTHENTICATION_BACKENDS = [
     
